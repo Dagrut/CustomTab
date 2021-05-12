@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<link rel="shortcut icon" type="image/x-icon" href="https://www.gravatar.com/avatar/2d2d2d00000000000000000000000000?d=identicon&f=y" />
+		<script type="text/javascript">
+			const $link = document.querySelector("link[rel='shortcut icon']");
+			let timeoutId = null;
+
+			function pad2(x) {
+				x += '';
+
+				while (x.length < 2) {
+					x = '0' + x;
+				}
+
+				return (x);
+			}
+
+			function updateFavicon() {
+				if (timeoutId) {
+					clearTimeout(timeoutId);
+				}
+
+				timeoutId = setTimeout(function() {
+					timeoutId = null;
+
+					const titleEnc = encodeURIComponent(document.title);
+					const hash = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+					for (let i = 0 ; i < titleEnc.length ; i++) {
+						const k = i % hash.length;
+						hash[k] = (hash[k] + titleEnc.charCodeAt(i)) % 256;
+					}
+					const hashStr = hash.map((x) => pad2(x.toString(16))).join('');
+					$link.href = `https://www.gravatar.com/avatar/${hashStr}?d=identicon&f=y`;
+				}, 1000);
+			}
+
+			function inputChange($input) {
+				document.title = ($input && $input.value) || '---';
+				
+				updateFavicon();
+			}
+
+			inputChange();
+		</script>
+		<style>
+			body {
+				height: 100vh;
+				width: 100%;
+				padding: 0;
+				padding-top: 50vh;
+				margin: 0;
+				/* line-height: 100vh; */
+			}
+
+			div {
+				display: inline-block;
+				width: 100%;
+				margin-top: -50%;
+				text-align: center;
+				line-height: 1vh;
+				line-height: normal;
+			}
+
+			input {
+				width: 80%;
+				padding: 0.3em 0.6em;
+				font-size: 3em;
+				font-weight: bold;
+				border-width: 0;
+				border-radius: 0.3em;
+				background-color: #eee;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<input type="text" oninput="inputChange(this)" placeholder="Set page title" />
+		</div>
+	</body>
+</html>
