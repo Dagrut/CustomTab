@@ -12,7 +12,9 @@ body {
 	padding: 0;
 	padding-top: 50vh;
 	margin: 0;
-	background: url("https://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon&f=y") no-repeat center 20% fixed;
+	background-repeat: no-repeat;
+	background-position: center 20%;
+	background-attachment: fixed;
 }
 
 div {
