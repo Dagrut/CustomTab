@@ -3,7 +3,6 @@
 	const $input = document.getElementsByTagName('input')[0];
 	const $body = document.body;
 	let timeoutId = null;
-	let nextFaviconValue = null;
 
 	function pad2(x) {
 		x += '';
@@ -32,18 +31,13 @@
 
 	function updateFaviconDelayed(value) {
 		if (timeoutId) {
-			nextFaviconValue = value;
-		} else {
-			nextFaviconValue = null;
-			updateFavicon(value);
-			timeoutId = setTimeout(function() {
-				timeoutId = null;
-				if (nextFaviconValue) {
-					updateFavicon(nextFaviconValue);
-					nextFaviconValue = null;
-				}
-			}, 1000);
+			clearTimeout(timeoutId);
 		}
+
+		timeoutId = setTimeout(function() {
+			timeoutId = null;
+			updateFavicon(value);
+		}, 1000);
 	}
 
 	function inputChange(value) {
@@ -63,5 +57,6 @@
 	const loadTimeInputValue = decodeURIComponent(location.hash.substr(1));
 
 	inputChange(loadTimeInputValue);
+	updateFavicon(loadTimeInputValue);
 	$input.value = loadTimeInputValue;
 })(window);
